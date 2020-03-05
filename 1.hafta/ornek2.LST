@@ -1,0 +1,2073 @@
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 
+                      00002 ; PICBASIC PRO(TM) Compiler 2.60, (c) 1998, 2009 microEngineering Labs, Inc. All Rights Reserved. 
+  00000001            00003 _USED                   EQU     1
+                      00004 
+                      00005         INCLUDE "C:\PBP\16F628.INC"
+                      00001 ;****************************************************************
+                      00002 ;*  16F628.INC                                                  *
+                      00003 ;*                                                              *
+                      00004 ;*  By        : Leonard Zerman, Jeff Schmoyer                   *
+                      00005 ;*  Notice    : Copyright (c) 2002 microEngineering Labs, Inc.  *
+                      00006 ;*              All Rights Reserved                             *
+                      00007 ;*  Date      : 09/27/02                                        *
+                      00008 ;*  Version   : 2.43                                            *
+                      00009 ;*  Notes     :                                                 *
+                      00010 ;****************************************************************
+                      00019         LIST
+                      00020         LIST p = 16F628, r = dec, w = -302
+                      00021         INCLUDE "P16F628.INC"   ; MPASM  Header
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F628 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2012 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      00381         LIST
+2007   3F65           00022         __config _XT_OSC & _WDT_ON & _PWRTE_ON & _MCLRE_ON & _LVP_OFF & _CP_OFF
+                      00025         LIST
+                      00006 
+                      00007 
+                      00008 ; Define statements.
+                      00009 ; C:\PBP\ORNEK2.PBP             00003   Define LOADER_USED 1
+                      00010 #define         LOADER_USED              1
+                      00011 
+  00000020            00012 RAM_START                       EQU     00020h
+  0000014F            00013 RAM_END                         EQU     0014Fh
+  00000003            00014 RAM_BANKS                       EQU     00003h
+  00000020            00015 BANK0_START                     EQU     00020h
+  0000007F            00016 BANK0_END                       EQU     0007Fh
+  000000A0            00017 BANK1_START                     EQU     000A0h
+  000000EF            00018 BANK1_END                       EQU     000EFh
+  00000120            00019 BANK2_START                     EQU     00120h
+  0000014F            00020 BANK2_END                       EQU     0014Fh
+  00002100            00021 EEPROM_START                    EQU     02100h
+  0000217F            00022 EEPROM_END                      EQU     0217Fh
+                      00023 
+                      00024 ; C:\PBP\PBPPIC14.RAM           00012   A00020  R0      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000020            00025 R0                              EQU     RAM_START + 000h
+                      00026 ; C:\PBP\PBPPIC14.RAM           00013   A00022  R1      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000022            00027 R1                              EQU     RAM_START + 002h
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00028 ; C:\PBP\PBPPIC14.RAM           00014   A00024  R2      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000024            00029 R2                              EQU     RAM_START + 004h
+                      00030 ; C:\PBP\PBPPIC14.RAM           00015   A00026  R3      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000026            00031 R3                              EQU     RAM_START + 006h
+                      00032 ; C:\PBP\PBPPIC14.RAM           00016   A00028  R4      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000028            00033 R4                              EQU     RAM_START + 008h
+                      00034 ; C:\PBP\PBPPIC14.RAM           00017   A0002A  R5      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  0000002A            00035 R5                              EQU     RAM_START + 00Ah
+                      00036 ; C:\PBP\PBPPIC14.RAM           00018   A0002C  R6      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  0000002C            00037 R6                              EQU     RAM_START + 00Ch
+                      00038 ; C:\PBP\PBPPIC14.RAM           00019   A0002E  R7      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  0000002E            00039 R7                              EQU     RAM_START + 00Eh
+                      00040 ; C:\PBP\PBPPIC14.RAM           00020   A00030  R8      VAR     WORD BANK0 SYSTEM       ' System Registe
+                            r
+  00000030            00041 R8                              EQU     RAM_START + 010h
+                      00042 ; C:\PBP\PBPPIC14.RAM           00026   A00032  FLAGS   VAR     BYTE BANK0 SYSTEM       ' Static flags
+  00000032            00043 FLAGS                           EQU     RAM_START + 012h
+                      00044 ; C:\PBP\PBPPIC14.RAM           00025   A00033  GOP     VAR     BYTE BANK0 SYSTEM       ' Gen Op Paramet
+                            er
+  00000033            00045 GOP                             EQU     RAM_START + 013h
+                      00046 ; C:\PBP\PBPPIC14.RAM           00022   A00034  RM1     VAR     BYTE BANK0 SYSTEM       ' Pin 1 Mask
+  00000034            00047 RM1                             EQU     RAM_START + 014h
+                      00048 ; C:\PBP\PBPPIC14.RAM           00024   A00035  RM2     VAR     BYTE BANK0 SYSTEM       ' Pin 2 Mask
+  00000035            00049 RM2                             EQU     RAM_START + 015h
+                      00050 ; C:\PBP\PBPPIC14.RAM           00021   A00036  RR1     VAR     BYTE BANK0 SYSTEM       ' Pin 1 Register
+  00000036            00051 RR1                             EQU     RAM_START + 016h
+                      00052 ; C:\PBP\PBPPIC14.RAM           00023   A00037  RR2     VAR     BYTE BANK0 SYSTEM       ' Pin 2 Register
+  00000037            00053 RR2                             EQU     RAM_START + 017h
+                      00054 ; C:\PBP\16F628.BAS             00020   PORTL   VAR     PORTB
+  00000006            00055 _PORTL                          EQU      PORTB
+                      00056 ; C:\PBP\16F628.BAS             00021   PORTH   VAR     PORTA
+  00000005            00057 _PORTH                          EQU      PORTA
+                      00058 ; C:\PBP\16F628.BAS             00022   TRISL   VAR     TRISB
+  00000086            00059 _TRISL                          EQU      TRISB
+                      00060 ; C:\PBP\16F628.BAS             00023   TRISH   VAR     TRISA
+  00000085            00061 _TRISH                          EQU      TRISA
+                      00062 #define _transistor             _PORTA??0
+                      00063 #define _PORTA??0                PORTA, 000h
+                      00064 
+                      00065 ; Constants.
+  000001F4            00066 _bekle                          EQU     001F4h
+                      00067         INCLUDE "ORNEK2.MAC"
+                      00001 
+                      00082         LIST
+                      00068         INCLUDE "C:\PBP\PBPPIC14.LIB"
+                      00001 ;******************************************************************
+                      00002 ;*  PBPPIC14.LIB                                                  *
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00003 ;*                                                                *
+                      00004 ;*  By        : Leonard Zerman, Jeff Schmoyer                     *
+                      00005 ;*  Notice    : Copyright (c) 2009 microEngineering Labs, Inc.    *
+                      00006 ;*              All Rights Reserved                               *
+                      00007 ;*  Date      : 07/08/09                                          *
+                      00008 ;*  Version   : 2.60                                              *
+                      00009 ;*  Notes     :                                                   *
+                      00010 ;******************************************************************
+                      00054   LIST
+                      00055 ; Oscillator is 4MHz
+                      01133   LIST
+0000                  01134     ORG RESET_ORG               ; Reset vector usually at 0
+                      01149   LIST
+0000   283B           01150         goto    INIT            ; Finish initialization
+                      01154   LIST
+0004                  01155     ORG RESET_ORG + 4           ; Make sure no library code in first 4 locs
+                      06329   LIST
+0004   01A3           06330 PAUSE   clrf    R1 + 1
+0005   00A2           06331 PAUSEL  movwf   R1
+0006   30FF           06332 pauseloop movlw -1              ; 1 (9)
+0007   07A2           06333         addwf   R1, F           ; 1
+0008   1C03           06334         btfss   STATUS, C       ; 1 / 2
+0009   07A3           06335         addwf   R1 + 1, F       ; 1 / 0
+000A   1C03           06336         btfss   STATUS, C       ; 2
+000B   2836           06337         goto    DONE
+000C   3003           06338         movlw   (PAUSE_DELAY) >> 8      ; 1
+000D   00A1           06339         movwf   R0 + 1          ; 1
+000E   30DF           06340         movlw   low (PAUSE_DELAY)       ; 1
+000F   2012           06341         call    PAUSEUSL        ; -2 (PAUSEUSL gives you 2 less than you ask for)
+0010   2806           06342         goto    pauseloop       ; 2
+                      06386   LIST
+0011   01A1           06387 PAUSEUS clrf    R0 + 1          ; 1
+0012   3EE8           06388 PAUSEUSL addlw  -24             ; 1 Subtract overhead
+0013   00A0           06389         movwf   R0              ; 1
+0014   09A1           06390         comf    R0 + 1, F       ; 1
+0015   30FC           06391         movlw   -4              ; 1
+0016   1C03           06392         btfss   STATUS, C       ; 1 / 2
+0017   281B           06393         goto    pauseush        ; 2 / 0
+0018   07A0           06394 pauseusloop addwf R0, F         ; 1
+0019   1803           06395         btfsc   STATUS, C       ; 1 / 2
+001A   2818           06396         goto    pauseusloop     ; 2 / 0
+001B   07A0           06397 pauseush addwf  R0, F           ; 1 Do an extra countdown
+                      06398         CLRWDT?NOP              ; 1 Keep Watchdog clear
+                          M     ifndef NO_CLRWDT
+001C   0064               M         clrwdt
+                          M     else
+                          M         nop
+                          M     endif
+001D   0FA1           06399         incfsz  R0 + 1, F       ; 1 / 2
+001E   2818           06400         goto    pauseusloop     ; 2 / 0
+001F   1820           06401         btfsc   R0, 0           ; 1 / 2
+0020   2821           06402         goto    $ + 1           ; 2 / 0 Burn an extra cycle
+0021   1CA0           06403         btfss   R0, 1           ; 1 / 2
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0022   2825           06404         goto    pauseusdone     ; 2 / 0
+0023   0000           06405         nop                     ; 1
+0024   2825           06406         goto    $ + 1           ; 2 Burn an extra 2 cycles
+0025   0008           06407 pauseusdone return              ; 2 + 3 (call + setup)
+                      07066   LIST
+0026   1003           07067 shiftlloop bcf  STATUS, C       ; Shift in 0 bits
+0027   0DA0           07068         rlf     R0, F           ; Shift left once
+0028   0DA1           07069         rlf     R0 + 1, F
+0029   3EFF           07070 SHIFTL  addlw   -1
+002A   1803           07071         btfsc   STATUS, C       ; Done?
+002B   2826           07072         goto    shiftlloop
+002C   0820           07073         movf    R0, W           ; Move low part of result to W
+002D   2836           07074         goto    DONE
+                      07090   LIST
+002E   1003           07091 shiftrloop bcf  STATUS, C       ; Shift in 0 bits
+002F   0CA1           07092         rrf     R0 + 1, F       ; Shift right once
+0030   0CA0           07093         rrf     R0, F
+0031   3EFF           07094 SHIFTR  addlw   -1
+0032   1803           07095         btfsc   STATUS, C       ; Done?
+0033   282E           07096         goto    shiftrloop
+0034   0820           07097         movf    R0, W           ; Move low part of result to W
+0035   2836           07098         goto    DONE
+                      07766   LIST
+0036   1383           07767 DONE    bcf     STATUS, IRP     ; 1 Set FSR to bank 0/1
+0037   1303           07768         bcf     STATUS, RP1     ; 1 Show direct bank 0
+0038   1283           07769         bcf     STATUS, RP0     ; 1
+                      07770         CLRWDT?NOP              ; 1 Hit Watchdog timer
+                          M     ifndef NO_CLRWDT
+0039   0064               M         clrwdt
+                          M     else
+                          M         nop
+                          M     endif
+003A   0008           07771 DONERET return                  ; 2 Done
+                      07797   LIST
+003B                  07798 INIT
+                      07836   LIST
+003B                  07837 main
+                      00069 
+                      00070 
+                      00071 ; C:\PBP\16F628.BAS             00012   BANK0   $0020, $007F
+                      00072 ; C:\PBP\16F628.BAS             00013   BANK1   $00A0, $00EF
+                      00073 ; C:\PBP\16F628.BAS             00014   BANK2   $0120, $014F
+                      00074 ; C:\PBP\16F628.BAS             00015   EEPROM  $2100, $217F
+                      00075 ; C:\PBP\16F628.BAS             00016   LIBRARY "PBPPIC14"
+                      00076 
+                      00077 ; C:\PBP\16F628.BAS             00018           include "PIC14EXT.BAS"
+                      00078 
+                      00079 ; C:\PBP\16F628.BAS             00025           include "PBPPIC14.RAM"
+                      00080 ; C:\PBP\ORNEK2.PBP             00003   Define LOADER_USED 1
+                      00081 
+                      00082 ; C:\PBP\ORNEK2.PBP             00006   TRISA=0
+                      00083         MOVE?CB 000h, TRISA
+                          M         CHK?RP  TRISA
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M     if (((TRISA) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((TRISA) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+003B   1683               M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000001                M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((TRISA) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((TRISA) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (low (000h) == 0)
+003C   0185               M         clrf    TRISA
+                          M     else
+                          M         movlw   low (000h)
+                          M         movwf   TRISA
+                          M     endif
+                      00084 
+                      00085 ; C:\PBP\ORNEK2.PBP             00007   TRISB=0
+                      00086         MOVE?CB 000h, TRISB
+                          M         CHK?RP  TRISB
+                          M     if (((TRISB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((TRISB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000001                M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((TRISB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M 
+                          M     if (((TRISB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (low (000h) == 0)
+003D   0186               M         clrf    TRISB
+                          M     else
+                          M         movlw   low (000h)
+                          M         movwf   TRISB
+                          M     endif
+                      00087 ; C:\PBP\ORNEK2.PBP             00009   symbol transistor=porta.0
+                      00088 
+                      00089 ; C:\PBP\ORNEK2.PBP             00010   transistor=1
+                      00090         MOVE?CT 001h, _transistor
+                          M         CHK?RP  PORTA
+                          M     if (((PORTA) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+003E   1283               M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTA) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M     if (((PORTA) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTA) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (((001h) & 1) == 1)
+003F   1405               M         bsf     PORTA,  000h
+                          M     else
+                          M         bcf     PORTA,  000h
+                          M     endif
+                      00091 
+                      00092 ; C:\PBP\ORNEK2.PBP             00011   portb=1
+                      00093         MOVE?CB 001h, PORTB
+                          M         CHK?RP  PORTB
+                          M     if (((PORTB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (low (001h) == 0)
+                          M         clrf    PORTB
+                          M     else
+0040   3001               M         movlw   low (001h)
+0041   0086               M         movwf   PORTB
+                          M     endif
+                      00094 ; C:\PBP\ORNEK2.PBP             00013   bekle CON 500
+                      00095 
+                      00096 ; C:\PBP\ORNEK2.PBP             00015   label:
+                      00097 
+                      00098         LABEL?L _label  
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M     ifdef PM_USED
+                          M         LALL
+                          M _label
+                          M         XALL
+                          M     else
+0042                      M _label
+                          M     endif
+                      00099 
+                      00100 ; C:\PBP\ORNEK2.PBP             00016        while portb!=128
+                      00101         LABEL?L L00001  
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M     ifdef PM_USED
+                          M         LALL
+                          M L00001
+                          M         XALL
+                          M     else
+0042                      M L00001
+                          M     endif
+                      00102         CMPEQ?BCL       PORTB, 080h, L00002
+                          M     if (((080h) > -100h) & ((080h) < 100h))
+                          M         CLRWDT?
+                          M     ifndef NO_CLRWDT
+0042   0064               M         clrwdt
+                          M     endif
+                          M         MOVE?BA PORTB
+                          M         CHK?RP  PORTB
+                          M     if (((PORTB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+0043   0806               M         movf    PORTB, W
+0044   3C80               M         sublw   080h
+                          M         BIT?GOTO 1, STATUS, Z, L00002
+                          M     ifdef USE_LINKER
+                          M         CLRWDT?
+                          M     else
+                          M       if ($ == (L00002))
+                          M         CLRWDT?
+                          M       endif
+                          M     endif
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel L00002
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       endif
+                          M     else
+                          M       if (CODE_SIZE > 2)
+                          M         if (((L00002) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M         else
+                          M         bsf     PCLATH, 3
+                          M         endif
+                          M       endif
+                          M       if (CODE_SIZE > 4)
+                          M         if (((L00002) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M         else
+                          M         bsf     PCLATH, 4
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+                          M     if (((STATUS) & 0ff80h) != 0)
+                          M         CHK?RP  STATUS
+                          M         bcf     STATUS, DC
+                          M       if ((1)      == 0)
+                          M         btfss   STATUS, Z
+                          M       else
+                          M         btfsc   STATUS, Z
+                          M       endif
+                          M         bsf     STATUS, DC
+                          M         RST?RP
+                          M         btfsc   STATUS, DC
+                          M     else
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M       if ((1)      == 0)
+                          M         btfss   STATUS, Z
+                          M       else
+0045   1903               M         btfsc   STATUS, Z
+                          M       endif
+                          M     endif
+                          M 
+0046   284E               M         goto    L00002
+                          M     endif
+                      00103 
+                      00104 ; C:\PBP\ORNEK2.PBP             00017             portb=portb<<1
+                      00105         SHIFTL?BCB      PORTB, 001h, PORTB
+                          M     if ((001h) == 1)
+0047   1003               M         bcf     STATUS, C
+                          M       if ((PORTB) == (PORTB))
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         CHK?RP  PORTB
+                          M     if (((PORTB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+0048   0D86               M         rlf     PORTB, F
+                          M       else
+                          M         CHK?RP  PORTB
+                          M         rlf     PORTB, W
+                          M         MOVE?AB PORTB
+                          M       endif
+                          M     else
+                          M         MOVE?BB PORTB, R0
+                          M         movlw   001h
+                          M         L?CALL  SHIFTL
+                          M         MOVE?AB PORTB
+                          M     endif
+                      00106 
+                      00107 ; C:\PBP\ORNEK2.PBP             00018             pause bekle
+                      00108         PAUSE?C _bekle
+                          M     if (((_bekle) >> 8) == 0)
+                          M         MOVE?CA _bekle
+                          M         L?CALL  PAUSE
+                          M     else
+                          M         MOVE?CB (_bekle) >> 8, R1 + 1
+                          M         CHK?RP  R1 + 1
+                          M     if (((R1 + 1) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 100h)
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (low ((_bekle) >> 8) == 0)
+                          M         clrf    R1 + 1
+                          M     else
+0049   3001               M         movlw   low ((_bekle) >> 8)
+004A   00A3               M         movwf   R1 + 1
+                          M     endif
+                          M         MOVE?CA low (_bekle)
+004B   30F4               M         movlw   low (low (_bekle))
+                          M         L?CALL  PAUSEL
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel PAUSEL
+                          M       endif
+                          M     else
+                          M       if ((PAUSEL) < 1)
+                          M         if (CODE_SIZE > 2)
+                          M           if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         else
+                          M         bsf     PCLATH, 3
+                          M         endif
+                          M         endif
+                          M         if (CODE_SIZE > 4)
+                          M           if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M           else
+                          M         bsf     PCLATH, 4
+                          M           endif
+                          M         endif
+                          M       else
+                          M         if ((PAUSEL) > $)
+                          M           if (CODE_SIZE > 2)
+                          M             if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M             else
+                          M         bsf     PCLATH, 3
+                          M             endif
+                          M           endif
+                          M           if (CODE_SIZE > 4)
+                          M             if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M             else
+                          M         bsf     PCLATH, 4
+                          M             endif
+                          M           endif
+                          M         else
+                          M           if (CODE_SIZE > 2)
+                          M             if (((PAUSEL) & 1800h) == 0)
+                          M         clrf    PCLATH
+                          M             else
+                          M               if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M               else
+                          M         bsf     PCLATH, 3
+                          M               endif
+                          M               if (CODE_SIZE > 4)
+                          M                 if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M                 else
+                          M         bsf     PCLATH, 4
+                          M                 endif   
+                          M               endif
+                          M             endif
+                          M           endif
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+004C   2005               M         call    PAUSEL
+                          M     endif
+                      00109 
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00110 ; C:\PBP\ORNEK2.PBP             00019        wend
+                      00111         GOTO?L  L00001
+                          M         L?GOTO  L00001
+                          M     ifdef USE_LINKER
+                          M         CLRWDT?
+                          M     else
+                          M       if ($ == (L00001))
+                          M         CLRWDT?
+                          M       endif
+                          M     endif
+                          M 
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel L00001
+                          M       endif
+                          M     else
+                          M       if ((L00001) < 1)
+                          M         if (CODE_SIZE > 2)
+                          M           if (((L00001) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M           else
+                          M         bsf     PCLATH, 3
+                          M           endif
+                          M         endif
+                          M         if (CODE_SIZE > 4)
+                          M           if (((L00001) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M           else
+                          M         bsf     PCLATH, 4
+                          M           endif
+                          M         endif
+                          M       else
+                          M         if ((L00001) > $)
+                          M           if (CODE_SIZE > 2)
+                          M             if (((L00001) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M             else
+                          M         bsf     PCLATH, 3
+                          M             endif
+                          M           endif
+                          M           if (CODE_SIZE > 4)
+                          M             if (((L00001) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M             else
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         bsf     PCLATH, 4
+                          M             endif
+                          M           endif
+                          M         else
+                          M           if (CODE_SIZE > 2)
+                          M             if (((L00001) & 1800h) == 0)
+                          M         clrf    PCLATH
+                          M             else
+                          M               if (((L00001) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M               else
+                          M         bsf     PCLATH, 3
+                          M               endif
+                          M               if (CODE_SIZE > 4)
+                          M                 if (((L00001) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M                 else
+                          M         bsf     PCLATH, 4
+                          M                 endif
+                          M               endif
+                          M             endif
+                          M           endif
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+004D   2842               M         goto    L00001
+                      00112         LABEL?L L00002  
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M     ifdef PM_USED
+                          M         LALL
+                          M L00002
+                          M         XALL
+                          M     else
+004E                      M L00002
+                          M     endif
+                      00113 
+                      00114 ; C:\PBP\ORNEK2.PBP             00020        while portb!=1
+                      00115         LABEL?L L00003  
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  00000000                M PREV_BANK = 0
+                          M     ifdef PM_USED
+                          M         LALL
+                          M L00003
+                          M         XALL
+                          M     else
+004E                      M L00003
+                          M     endif
+                      00116         CMPEQ?BCL       PORTB, 001h, L00004
+                          M     if (((001h) > -100h) & ((001h) < 100h))
+                          M         CLRWDT?
+                          M     ifndef NO_CLRWDT
+004E   0064               M         clrwdt
+                          M     endif
+                          M         MOVE?BA PORTB
+                          M         CHK?RP  PORTB
+                          M     if (((PORTB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+004F   0806               M         movf    PORTB, W
+0050   3C01               M         sublw   001h
+                          M         BIT?GOTO 1, STATUS, Z, L00004
+                          M     ifdef USE_LINKER
+                          M         CLRWDT?
+                          M     else
+                          M       if ($ == (L00004))
+                          M         CLRWDT?
+                          M       endif
+                          M     endif
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel L00004
+                          M       endif
+                          M     else
+                          M       if (CODE_SIZE > 2)
+                          M         if (((L00004) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M         else
+                          M         bsf     PCLATH, 3
+                          M         endif
+                          M       endif
+                          M       if (CODE_SIZE > 4)
+                          M         if (((L00004) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M         else
+                          M         bsf     PCLATH, 4
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+                          M     if (((STATUS) & 0ff80h) != 0)
+                          M         CHK?RP  STATUS
+                          M         bcf     STATUS, DC
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 21
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       if ((1)      == 0)
+                          M         btfss   STATUS, Z
+                          M       else
+                          M         btfsc   STATUS, Z
+                          M       endif
+                          M         bsf     STATUS, DC
+                          M         RST?RP
+                          M         btfsc   STATUS, DC
+                          M     else
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M       if ((1)      == 0)
+                          M         btfss   STATUS, Z
+                          M       else
+0051   1903               M         btfsc   STATUS, Z
+                          M       endif
+                          M     endif
+                          M 
+0052   285A               M         goto    L00004
+                          M     endif
+                      00117 
+                      00118 ; C:\PBP\ORNEK2.PBP             00021             portb=portb>>1 
+                      00119         SHIFTR?BCB      PORTB, 001h, PORTB
+                          M     if ((001h) == 1)
+0053   1003               M         bcf     STATUS, C
+                          M       if ((PORTB) == (PORTB))
+                          M         CHK?RP  PORTB
+                          M     if (((PORTB) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 22
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((PORTB) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+0054   0C86               M         rrf     PORTB, F
+                          M       else
+                          M         CHK?RP  PORTB
+                          M         rrf     PORTB, W
+                          M         MOVE?AB PORTB
+                          M       endif
+                          M     else
+                          M         MOVE?BW PORTB, R0
+                          M         movlw   001h
+                          M         L?CALL  SHIFTR
+                          M         MOVE?AB PORTB
+                          M     endif
+                      00120 
+                      00121 ; C:\PBP\ORNEK2.PBP             00022             pause bekle
+                      00122         PAUSE?C _bekle
+                          M     if (((_bekle) >> 8) == 0)
+                          M         MOVE?CA _bekle
+                          M         L?CALL  PAUSE
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 23
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M     else
+                          M         MOVE?CB (_bekle) >> 8, R1 + 1
+                          M         CHK?RP  R1 + 1
+                          M     if (((R1 + 1) & 180h) == 0)
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+  00000000                M PREV_BANK = 0
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 80h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP1
+                          M       endif
+                          M PREV_BANK = 1
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 100h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bcf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 3)
+                          M         bcf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 2
+                          M     endif
+                          M 
+                          M     if (((R1 + 1) & 180h) == 180h)
+                          M       if (PREV_BANK == 0)
+                          M         bsf     STATUS, RP0
+                          M         bsf     STATUS, RP1
+                          M       endif
+                          M       if (PREV_BANK == 1)
+                          M         bsf     STATUS, RP1
+                          M       endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 24
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       if (PREV_BANK == 2)
+                          M         bsf     STATUS, RP0
+                          M       endif
+                          M PREV_BANK = 3
+                          M     endif
+                          M     if (low ((_bekle) >> 8) == 0)
+                          M         clrf    R1 + 1
+                          M     else
+0055   3001               M         movlw   low ((_bekle) >> 8)
+0056   00A3               M         movwf   R1 + 1
+                          M     endif
+                          M         MOVE?CA low (_bekle)
+0057   30F4               M         movlw   low (low (_bekle))
+                          M         L?CALL  PAUSEL
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel PAUSEL
+                          M       endif
+                          M     else
+                          M       if ((PAUSEL) < 1)
+                          M         if (CODE_SIZE > 2)
+                          M           if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M         else
+                          M         bsf     PCLATH, 3
+                          M         endif
+                          M         endif
+                          M         if (CODE_SIZE > 4)
+                          M           if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M           else
+                          M         bsf     PCLATH, 4
+                          M           endif
+                          M         endif
+                          M       else
+                          M         if ((PAUSEL) > $)
+                          M           if (CODE_SIZE > 2)
+                          M             if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M             else
+                          M         bsf     PCLATH, 3
+                          M             endif
+                          M           endif
+                          M           if (CODE_SIZE > 4)
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 25
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M             if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M             else
+                          M         bsf     PCLATH, 4
+                          M             endif
+                          M           endif
+                          M         else
+                          M           if (CODE_SIZE > 2)
+                          M             if (((PAUSEL) & 1800h) == 0)
+                          M         clrf    PCLATH
+                          M             else
+                          M               if (((PAUSEL) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M               else
+                          M         bsf     PCLATH, 3
+                          M               endif
+                          M               if (CODE_SIZE > 4)
+                          M                 if (((PAUSEL) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M                 else
+                          M         bsf     PCLATH, 4
+                          M                 endif   
+                          M               endif
+                          M             endif
+                          M           endif
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+0058   2005               M         call    PAUSEL
+                          M     endif
+                      00123 
+                      00124 ; C:\PBP\ORNEK2.PBP             00023        wend
+                      00125         GOTO?L  L00003
+                          M         L?GOTO  L00003
+                          M     ifdef USE_LINKER
+                          M         CLRWDT?
+                          M     else
+                          M       if ($ == (L00003))
+                          M         CLRWDT?
+                          M       endif
+                          M     endif
+                          M 
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M 
+                          M     ifdef USE_LINKER
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 26
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel L00003
+                          M       endif
+                          M     else
+                          M       if ((L00003) < 1)
+                          M         if (CODE_SIZE > 2)
+                          M           if (((L00003) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M           else
+                          M         bsf     PCLATH, 3
+                          M           endif
+                          M         endif
+                          M         if (CODE_SIZE > 4)
+                          M           if (((L00003) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M           else
+                          M         bsf     PCLATH, 4
+                          M           endif
+                          M         endif
+                          M       else
+                          M         if ((L00003) > $)
+                          M           if (CODE_SIZE > 2)
+                          M             if (((L00003) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M             else
+                          M         bsf     PCLATH, 3
+                          M             endif
+                          M           endif
+                          M           if (CODE_SIZE > 4)
+                          M             if (((L00003) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M             else
+                          M         bsf     PCLATH, 4
+                          M             endif
+                          M           endif
+                          M         else
+                          M           if (CODE_SIZE > 2)
+                          M             if (((L00003) & 1800h) == 0)
+                          M         clrf    PCLATH
+                          M             else
+                          M               if (((L00003) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M               else
+                          M         bsf     PCLATH, 3
+                          M               endif
+                          M               if (CODE_SIZE > 4)
+                          M                 if (((L00003) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M                 else
+                          M         bsf     PCLATH, 4
+                          M                 endif
+                          M               endif
+                          M             endif
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 27
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M           endif
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+0059   284E               M         goto    L00003
+                      00126         LABEL?L L00004  
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M     ifdef PM_USED
+                          M         LALL
+                          M L00004
+                          M         XALL
+                          M     else
+005A                      M L00004
+                          M     endif
+                      00127 
+                      00128 ; C:\PBP\ORNEK2.PBP             00024   goto label 
+                      00129         GOTO?L  _label
+                          M         L?GOTO  _label
+                          M     ifdef USE_LINKER
+                          M         CLRWDT?
+                          M     else
+                          M       if ($ == (_label))
+                          M         CLRWDT?
+                          M       endif
+                          M     endif
+                          M 
+                          M         RST?RP
+                          M     if ((PREV_BANK & 1) != 0)
+                          M         bcf     STATUS, RP0
+                          M     endif
+                          M     if ((PREV_BANK & 2) != 0)
+                          M         bcf     STATUS, RP1
+                          M     endif
+  00000000                M PREV_BANK = 0
+                          M 
+                          M     ifdef USE_LINKER
+                          M       if (CODE_SIZE > 2)
+                          M         pagesel _label
+                          M       endif
+                          M     else
+                          M       if ((_label) < 1)
+                          M         if (CODE_SIZE > 2)
+                          M           if (((_label) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M           else
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 28
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M         bsf     PCLATH, 3
+                          M           endif
+                          M         endif
+                          M         if (CODE_SIZE > 4)
+                          M           if (((_label) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M           else
+                          M         bsf     PCLATH, 4
+                          M           endif
+                          M         endif
+                          M       else
+                          M         if ((_label) > $)
+                          M           if (CODE_SIZE > 2)
+                          M             if (((_label) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M             else
+                          M         bsf     PCLATH, 3
+                          M             endif
+                          M           endif
+                          M           if (CODE_SIZE > 4)
+                          M             if (((_label) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M             else
+                          M         bsf     PCLATH, 4
+                          M             endif
+                          M           endif
+                          M         else
+                          M           if (CODE_SIZE > 2)
+                          M             if (((_label) & 1800h) == 0)
+                          M         clrf    PCLATH
+                          M             else
+                          M               if (((_label) & 800h) == 0)
+                          M         bcf     PCLATH, 3
+                          M               else
+                          M         bsf     PCLATH, 3
+                          M               endif
+                          M               if (CODE_SIZE > 4)
+                          M                 if (((_label) & 1000h) == 0)
+                          M         bcf     PCLATH, 4
+                          M                 else
+                          M         bsf     PCLATH, 4
+                          M                 endif
+                          M               endif
+                          M             endif
+                          M           endif
+                          M         endif
+                          M       endif
+                          M     endif
+                          M 
+005A   2842               M         goto    _label
+                      00130 
+                      00131         END
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADC_BITS                          00000008
+ADC_CLOCK                         00000003
+ADC_SAMPLEUS                      00000032
+ADDEN                             00000003
+ADEN                              00000003
+BANK0_END                         0000007F
+BANK0_START                       00000020
+BANK1_END                         000000EF
+BANK1_START                       000000A0
+BANK2_END                         0000014F
+BANK2_START                       00000120
+BIT?FLIP                          
+BIT?FW                            
+BIT?GOTO                          
+BIT?R1                            
+BIT?R2                            
+BIT?W                             
+BRGH                              00000002
+BUTTON_PAUSE                      0000000A
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP1_BIT                          00000003
+CCP1_REG                          00000006
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CHK?RP                            
+CIS                               00000003
+CLRWDT?                           
+CLRWDT?NOP                        
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000001F
+CMIE                              00000006
+CMIF                              00000006
+CMPEQ?BCL                         
+CODE_SIZE                         00000002
+CREN                              00000004
+CSRC                              00000007
+DATA_CP_OFF                       00003FFF
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DATA_CP_ON                        00003EFF
+DC                                00000001
+DEBUGIN_BIT                       00000000
+DEBUGIN_MODE                      00000001
+DEBUGIN_REG                       00000006
+DEBUG_BAUD                        00000960
+DEBUG_BIT                         00000000
+DEBUG_DELAY                       00000193
+DEBUG_MODE                        00000001
+DEBUG_REG                         00000006
+DONE                              00000036
+DONERET                           0000003A
+DONE_USED                         00000001
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDATA                            0000009A
+EEIE                              00000007
+EEIF                              00000007
+EEPROM_END                        0000217F
+EEPROM_START                      00002100
+F                                 00000001
+FERR                              00000002
+FLAGS                             00000032
+FSR                               00000004
+GIE                               00000007
+GOP                               00000033
+GOTO?L                            
+HSER_BAUD                         00000960
+HSER_BITS                         00000008
+HSER_RCSTA                        00000090
+HSER_SPBRG                        00000019
+HSER_TXSTA                        00000020
+I2CFIRSTFLAG                      FLAGS, 2
+I2CREADFLAG                       FLAGS, 3
+I2CSTOPFLAG                       FLAGS, 5
+I2CSTOPSTRFLAG                    FLAGS, 6
+I2CWRITEFLAG                      FLAGS, 4
+INDF                              00000000
+INIT                              0000003B
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+L00001                            00000042
+L00002                            0000004E
+L00003                            0000004E
+L00004                            0000005A
+L?CALL                            
+L?GOTO                            
+LABEL?L                           
+LCDCDFLAG                         FLAGS, 0
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+LCDINITFLAG                       FLAGS, 1
+LCD_BITS                          00000004
+LCD_COMMANDUS                     000007D0
+LCD_DATAUS                        00000032
+LCD_DBIT                          00000000
+LCD_DREG                          00000005
+LCD_EBIT                          00000003
+LCD_EREG                          00000006
+LCD_LINES                         00000002
+LCD_RSBIT                         00000004
+LCD_RSREG                         00000005
+LCD_RWBIT                         00000004
+LCD_RWREG                         00000005
+LOADER_USED                       1
+MOVE?AB                           
+MOVE?AT                           
+MOVE?AW                           
+MOVE?AWW                          
+MOVE?BA                           
+MOVE?BB                           
+MOVE?BT                           
+MOVE?BW                           
+MOVE?CA                           
+MOVE?CB                           
+MOVE?CT                           
+MOVE?CW                           
+MOVE?TA                           
+MOVE?TB                           
+MOVE?TT                           
+MOVE?TW                           
+MOVE?WA                           
+MOVE?WB                           
+MOVE?WT                           
+MOVE?WW                           
+MOVE?WWA                          
+NOT_BO                            00000000
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+OERR                              00000001
+OPTION_REG                        00000081
+OSC                               00000004
+OSCF                              00000003
+OSC_VALID                         00000001
+PAUSE                             00000004
+PAUSE?C                           
+PAUSEL                            00000005
+PAUSEUS                           00000011
+PAUSEUSL                          00000012
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PAUSEUS_USED                      00000001
+PAUSE_DELAY                       000003DF
+PAUSE_USED                        00000001
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIR1                              0000000C
+PORTA                             00000005
+PORTB                             00000006
+PR2                               00000092
+PREV_BANK                         00000000
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+R0                                00000020
+R1                                00000022
+R2                                00000024
+R3                                00000026
+R4                                00000028
+R5                                0000002A
+R6                                0000002C
+R7                                0000002E
+R8                                00000030
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RAM_BANKS                         00000003
+RAM_END                           0000014F
+RAM_START                         00000020
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RESET_ORG                         00000000
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RM1                               00000034
+RM2                               00000035
+RP0                               00000005
+RP1                               00000006
+RR1                               00000036
+RR2                               00000037
+RST?RP                            
+RX9                               00000006
+RX9D                              00000000
+SHIFTL                            00000029
+SHIFTL?BCB                        
+SHIFTL_USED                       00000001
+SHIFTR                            00000031
+SHIFTR?BCB                        
+SHIFTR_USED                       00000001
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1OSCEN                           00000003
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRMT                              00000001
+TX9                               00000006
+TX9D                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             0000009F
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_50                            00002BFF
+_CP_75                            000017FF
+_CP_ALL                           000003FF
+_CP_OFF                           00003FFF
+_DEVID1                           00002006
+_ER_OSC_CLKOUT                    00003FFF
+_ER_OSC_NOCLKOUT                  00003FFE
+_EXTCLK_OSC                       00003FEF
+_FOSC_ECIO                        00003FEF
+_FOSC_ERCLK                       00003FFF
+_FOSC_ERIO                        00003FFE
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_FOSC_HS                          00003FEE
+_FOSC_INTOSCCLK                   00003FFD
+_FOSC_INTOSCIO                    00003FFC
+_FOSC_LP                          00003FEC
+_FOSC_XT                          00003FED
+_HS_OSC                           00003FEE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FEC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PORTA??0                         PORTA, 000h
+_PORTH                            00000005
+_PORTL                            00000006
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_TRISH                            00000085
+_TRISL                            00000086
+_USED                             00000001
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FED
+__16F628                          00000001
+_bekle                            000001F4
+_label                            00000042
+_transistor                       _PORTA??0
+main                              0000003B
+pauseloop                         00000006
+pauseusdone                       00000025
+pauseush                          0000001B
+pauseusloop                       00000018
+shiftlloop                        00000026
+shiftrloop                        0000002E
+MPASM  5.44                        ORNEK2.ASM   3-5-2020  11:42:40         PAGE 36
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXX----- ---------------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    88
+Program Memory Words Free:  1960
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     2 suppressed
+
+

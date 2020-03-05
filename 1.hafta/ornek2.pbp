@@ -1,0 +1,24 @@
+'portadaki lambalarý saða ve sola doðru kaydýrarak yakma
+
+Define LOADER_USED 1
+
+
+TRISA=0
+TRISB=0
+
+symbol transistor=porta.0
+transistor=1
+portb=1
+
+bekle CON 500
+
+label:
+     while portb!=128
+          portb=portb<<1
+          pause bekle
+     wend
+     while portb!=1
+          portb=portb>>1 
+          pause bekle
+     wend
+goto label 

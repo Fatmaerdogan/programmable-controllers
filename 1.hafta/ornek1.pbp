@@ -1,0 +1,21 @@
+'portadaki lambalarý sýrayla yakma
+
+Define LOADER_USED 1
+ADCON1=7
+
+TRISA=0
+TRISB=0
+
+symbol transistor=porta.0
+transistor=1
+portb=1
+
+bekle CON 100
+
+label:
+     portb=portb<<1
+     pause bekle
+     if portb=128 then portb=1:pause bekle
+goto label 
+
+
