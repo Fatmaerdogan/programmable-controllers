@@ -1,0 +1,18 @@
+DEFINE LCD_DREG PORTD           'LCD data portunun baglandigi pic portu 
+DEFINE LCD_DBIT 0                        '4-bit bus için data bit(0yada4) baslangiç
+DEFINE LCD_RSREG PORTE          'LCD RS in baglandigi pic portu 
+DEFINE LCD_RSBIT 0                      'RS in baglandigi pic portE nin bit numarasi
+DEFINE LCD_EREG PORTE            'LCD E nin baglandigi pic portu 
+DEFINE LCD_EBIT 2                        'LCD E nin baglandigi pic portE nin bit numarasi
+DEFINE LCD_BITS 8                             'PortD nin 8 biti veri transferi için kullanildi
+TRISE=%000                                       'Aslinda PortE.1 direkt topraga çekilse olurdu ama 
+PortE.1=0                                             ' PortE.1=0 olarak yaptik
+ADCON1=7                                         'porta ve porte yi dijitale ayarla
+PAUSE 100
+
+label :
+LcdOut $fe,1,"birinci satir"
+pause 500
+lcdout $fe,$C0,"ikinci satir"
+pause 500
+goto label

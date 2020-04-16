@@ -1,0 +1,97 @@
+'stepmotor5. örnek
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[10]
+i var byte[4]
+j var byte[4]
+x var byte
+y var byte
+z var byte
+a var byte
+b var byte
+bekle CON 100
+symbol g=portA.3
+
+j[0] = %00000001
+j[1] = %00000010
+j[2] = %00000100
+j[3] = %00001000
+
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+i[0] =%00010000
+i[1] =%00100000
+i[2] =%01000000
+i[3] =%10000000
+
+label:
+portA.0 = 0:portA.1 = 0 :portB.0 = 0:portB.1 = 0 :portB.2 = 0:portB.3 = 0
+for b=0 to 4
+    portB=i[b]
+    if g=1 and portB.4=1 then  z=z+1 :goto yak
+    if g=1 and portB.5=1 then  
+        if z!=0 then z=z-1 :goto yak
+    endif
+    if g=1 and portB.6=1 then  goto basla
+    if g=1 and portB.7=1 then  goto dur   
+next b 
+goto label
+
+yak:
+    if z<9 then
+        x = z DIG 0
+        y = z DIG 1
+        portA.0 = 1:portA.1 = 0:portB = k[x]
+        pause bekle
+        portA.0 = 0:portA.1 = 1:portB = k[y]
+        pause bekle
+    else
+        portA.0 = 1:portA.1 = 0:portB = k[z]
+        pause bekle
+    endif
+goto label
+
+basla:
+    for a=0 to z-1 
+        portA.1=0:portA.0=0   
+        for x=0 to 9
+            for y=0 to 4
+            portb=j[y]
+            pause bekle
+            next y
+        next x
+        a=a+1
+        if a<9 then
+        x = a DIG 0
+        y = a DIG 1
+        portA.0 = 1:portA.1 = 0:portB = k[x]
+        pause bekle
+        portA.0 = 0:portA.1 = 1:portB = k[y]
+        pause bekle
+        else
+        portA.0 = 1:portA.1 = 0:portB = k[z]
+        pause bekle
+        endif
+        a=a-1
+    next a
+GOTO LABEL
+
+dur:
+portB.0 = 0:portB.1 = 0 :portB.2 = 0:portB.3 = 0
+goto label
+
+
+
+

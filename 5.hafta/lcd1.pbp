@@ -1,0 +1,31 @@
+DEFINE LCD_DREG PORTD           'LCD data portunun baglandigi pic portu 
+DEFINE LCD_DBIT 0                        '4-bit bus için data bit(0yada4) baslangiç
+DEFINE LCD_RSREG PORTE          'LCD RS in baglandigi pic portu 
+DEFINE LCD_RSBIT 0                      'RS in baglandigi pic portE nin bit numarasi
+DEFINE LCD_EREG PORTE            'LCD E nin baglandigi pic portu 
+DEFINE LCD_EBIT 2                        'LCD E nin baglandigi pic portE nin bit numarasi
+DEFINE LCD_BITS 8                             'PortD nin 8 biti veri transferi için kullanildi
+TRISE=%000                                       'Aslinda PortE.1 direkt topraga çekilse olurdu ama 
+PortE.1=0                                             ' PortE.1=0 olarak yaptik
+ADCON1=7                                         'porta ve porte yi dijitale ayarla
+PAUSE 100
+
+LCDOUT $fe,$40,$00,$15,$0e,$1f,$0e,$15,$00  'güneþ þeklini 0. hafýzaya at
+LCDOUT $fe,$48,$07,$0e,$1c,$1c,$1c,$0e,$07  'ay þeklini 1. hafýzaya at
+LCDOUT $fe,$50,$04,$0e,$0e,$0e,$1f,$04,$00  'zil þeklini 2. hafýzaya at
+LCDOUT $fe,$58,4,14,31,31,31,4,4  'aðaç þeklini 3. hafýzaya at
+LCDOUT $fe,$60,0,10,0,17,14,0,0  'gülen surat þeklini 4. hafýzaya at
+LCDOUT $fe,$68,0,10,0,14,17,0,0  'aðlayan surat þeklini 5. hafýzaya at
+LCDOUT $fe,$70,0,14,16,14,1,30,4  ' þ harfini 6. hafýzaya at
+LCDOUT $fe,$78,14,0,14,17,15,1,14  ' ð harfini 7. hafýzaya at
+
+
+LcdOut $fe,$80,0
+LcdOut $fe,$81,1
+LcdOut $fe,$82,2
+LcdOut $fe,$83,3
+LcdOut $fe,$84,4
+LcdOut $fe,$85,5
+LcdOut $fe,$86,6
+LcdOut $fe,$87,7
+

@@ -1,0 +1,70 @@
+'stepmotor3. örnek
+define HSER_RCSTA 90h
+DEFINE HSER_TXSTA 24h
+DEFINE HSER_BAUD 9600    'terminaldeki haberleþme hýzý
+DEFINE HSER_CLROERR 1
+
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[4]
+i var byte
+j var byte
+x var byte
+y var byte
+bekle CON 100
+
+k[0] = %00000001
+k[1] = %00000010
+k[2] = %00000100
+k[3] = %00001000
+
+portA.1=0
+portA.0=0
+label:
+    hserin 100,devam,[x]
+    hserout [x,13,10]
+    devam:
+    select case x
+        case "a"
+            if j>=0 And j<=3 then
+            portb=k[j]
+            Pause bekle
+            j=j-1
+            else
+            j=3
+            endif
+        case "d"
+            if j<=3 then
+            portb=k[j]
+            Pause bekle
+            j=j+1
+            else
+            j=0
+            endif
+        case "w"
+            GoSub ileri
+        case "s"
+            gosub geri
+        end select
+goto label
+ileri:
+for x=0 to 9
+    for y=0 to 4
+    portb=k[y]
+    pause bekle
+    next y
+next x
+return
+
+geri:
+for x=0 to 9 
+    for y=4 to 0 step -1
+    portb=k[y-1]
+    pause bekle
+    next y
+next x
+return
+

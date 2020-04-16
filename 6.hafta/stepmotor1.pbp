@@ -1,0 +1,43 @@
+'stepmotor1. örnek
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[4]
+i var byte
+j var byte
+
+bekle CON 100
+
+k[0] = %00000001
+k[1] = %00000010
+k[2] = %00000100
+k[3] = %00001000
+
+symbol oG=portA.4
+portA.1=0
+portA.0=0
+label:
+     if oG=1 then Gosub ileri
+     if oG=0 then Gosub geri
+goto label
+ileri:
+    if j<=3 then
+    portb=k[j]
+    Pause bekle
+    j=j+1
+    else
+    j=0
+    endif
+return
+
+geri:
+    if j>=0 And j<=3 then
+    portb=k[j]
+    Pause bekle
+    j=j-1
+    else
+    j=3
+    endif
+return

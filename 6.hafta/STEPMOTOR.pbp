@@ -1,0 +1,50 @@
+'****************************************************************
+'*  Name    : UNTITLED.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2020 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 4/15/2020                                         *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+ DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[10]
+i var byte
+j var byte
+z var byte
+x var byte
+y var byte
+
+bekle CON 100
+
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+
+play:
+For i = 0 TO 9  ' 0'dan 99'a kadar sayar
+    portA.1=1
+    portA.0=0
+    portB=k[i]  
+    PAuse bekle 
+        for z = 0 to 9 'Ekranda gösterme kalýbý + 10ms 
+            portA.0 = 1
+            portA.1 = 0
+            portB = k[z]
+            PAuse bekle 
+        next z 
+    Next i 
+goto play

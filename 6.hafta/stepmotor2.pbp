@@ -1,0 +1,41 @@
+'stepmotor2. örnek
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[4]
+i var byte
+j var byte
+x var byte
+y var byte
+bekle CON 100
+
+k[0] = %00000001
+k[1] = %00000010
+k[2] = %00000100
+k[3] = %00001000
+
+portA.1=0
+portA.0=0
+label:
+Gosub ileri
+Gosub geri
+goto label
+ileri:
+for x=0 to 9
+    for y=0 to 4
+    portb=k[y]
+    pause bekle
+    next y
+next x
+return
+
+geri:
+for x=0 to 9 
+    for y=4 to 0 step -1
+    portb=k[y-1]
+    pause bekle
+    next y
+next x
+return

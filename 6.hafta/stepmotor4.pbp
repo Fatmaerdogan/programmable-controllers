@@ -1,0 +1,58 @@
+'stepmotor4. örnek
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 011000 
+TrisB = 0 
+
+k var byte[10]
+i var byte
+j var byte[4]
+x var byte
+y var byte
+z var byte
+bekle CON 10
+
+j[0] = %00000001
+j[1] = %00000010
+j[2] = %00000100
+j[3] = %00001000
+
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+portA.1=0
+portA.0=0
+label:
+gosub ileri
+if z>9 then
+    x = z DIG 0
+    y = z DIG 1
+    portA.0 = 1:portA.1 = 0:portB = k[x]
+    pause bekle
+    portA.0 = 0:portA.1 = 1:portB = k[y]
+    pause bekle
+else
+    portA.0 = 1:portA.1 = 0:portB = k[z]
+    pause bekle
+endif
+goto label
+
+ileri:
+portA.1=0
+portA.0=0
+for x=0 to 9
+    for y=0 to 4
+    portb=j[y]
+    pause bekle
+    next y
+next x
+z=z+1
+return
