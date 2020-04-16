@@ -1,0 +1,63 @@
+'asansör
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+
+TrisA = %001111
+TrisB = %00000000
+
+portA.4 = 1
+portA.5 = 1
+portB = %11111110
+
+x var byte 'Bulunduðu Kat
+y var byte  'Çaðýrýldýðý Kat
+
+x=1 ' %00000001 
+y=1  ' %00000001 
+
+
+label: 
+   
+
+    gosub buton
+   while x < y  
+    gosub ust
+   WEND  
+   while x > y 
+    gosub alt
+   WEND 
+  portA.4 = 1
+    portA.5 = 1 
+       
+        
+   
+   
+goto label
+
+    
+ust: 
+        portA.4 = 0
+        portA.5 = 1
+        
+        x = x << 1
+        portb = ~x
+         pause 500
+             
+return 
+
+alt: 
+        portA.4 = 1
+        portA.5 = 0
+        
+        x = x >> 1
+        portb = ~x
+        pause 500
+return 
+  
+ buton:
+    if portA.0 = 0 then y = 1 
+    if portA.1 = 0 then y = 4
+    if portA.2 = 0 then y = 16    
+    if portA.3 = 0 then y = 64
+return     
+ 

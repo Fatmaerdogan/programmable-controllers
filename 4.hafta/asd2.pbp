@@ -1,0 +1,125 @@
+'****************************************************************
+'*  Name    : TusTakimi.BAS                                      *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2020 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 3/2/2020                                          *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+
+TrisA = %00000000 
+TrisB = %00000000 
+portA = %00000000
+portB = %00000000
+
+i var byte 
+
+x var byte 
+y var byte 
+k var byte[10]
+z var byte
+t var byte
+m var byte
+
+bekle con 5
+
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+i=0
+
+label:
+    
+    gosub tus
+    x = i DIG 0
+    y = i DIG 1
+    Gosub goster_label
+
+GOTO label
+
+goster_label:
+    trisb = 0
+        portA.0 = 1  : portA.1 = 0
+            portB = k[x]
+            PAUSE bekle
+                      
+            portA.0 = 0  : portA.1 = 1
+            portB = k[y]
+            PAuse bekle 
+return 
+
+hesapla:
+    select  Case t
+       case "/"
+           m=z/i
+       case "*"
+           m=z*i
+       case "+"
+           m=z+i
+       case "-"
+           
+           if z>i then
+              m=i-z
+           else
+               m=z-i
+           Endif
+    End select
+    trisb = 0
+    x = m DIG 0
+    y = m DIG 1
+        portA.0 = 1  : portA.1 = 0
+            portB = k[x]
+            PAUSE bekle
+                      
+            portA.0 = 0  : portA.1 = 1
+            portB = k[y]
+            PAuse bekle
+             
+     porta = 0 
+    trisb = %00001111
+    portb.4 = 0 : portb.5 = 0 : portb.6 = 0 : portb.7 = 1
+    if portb.2 = 1 then i = 0 : m = 0 : z = 0 : t = 0 : goto label
+    
+Goto hesapla 
+ 
+tus:
+    porta = 0 
+    trisb = %00001111
+    portb.4 = 1 : portb.5 = 0 : portb.6 = 0 : portb.7 = 0
+    if portb.3 = 1 then i = 1       
+    if portb.2 = 1 then i = 2
+    if portb.1 = 1 then i = 3
+    if portb.0 = 1 then t = "+" : z = i 
+    
+    portb.4 = 0 : portb.5 = 1 : portb.6 = 0 : portb.7 = 0
+    if portb.3 = 1 then i = 4       
+    if portb.2 = 1 then i = 5
+    if portb.1 = 1 then i = 6
+    if portb.0 = 1 then t = "-" : z = i 
+    
+    portb.4 = 0 : portb.5 = 0 : portb.6 = 1 : portb.7 = 0
+    if portb.3 = 1 then i = 7       
+    if portb.2 = 1 then i = 8
+    if portb.1 = 1 then i = 9
+    if portb.0 = 1 then t = "*" : z = i 
+    
+    portb.4 = 0 : portb.5 = 0 : portb.6 = 0 : portb.7 = 1
+    if portb.3 = 1 then i = 0
+   ' if portb.2 = 1 then t = "+" : z = i 
+    if portb.1 = 1 then  GOTO hesapla 
+    if portb.0 = 1 then t = "/" : z = i        
+    
+return             

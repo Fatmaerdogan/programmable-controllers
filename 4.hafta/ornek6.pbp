@@ -1,0 +1,47 @@
+' display 0'dan 99'a kadar sayar
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 0 
+TrisB = 0 
+portA = 0
+portB = 0
+
+i var byte 
+
+x var byte 
+y var byte 
+k var byte[10]
+z var byte
+bekle CON 5          
+                             
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+
+
+portA.0 = 1
+
+label:
+   
+    For i = 0 TO 99  
+    x = i DIG 0
+    y = i DIG 1
+        for z = 0 to 49 'Ekranda gösterme kalýbý + 10ms    
+            portA.0 = 1  : portA.1 = 0
+            portB = k[x]
+            PAUSE bekle
+                      
+            portA.0 = 0  : portA.1 = 1
+            portB = k[y]
+            PAuse bekle 
+        next z 
+    Next i 
+GOTO label

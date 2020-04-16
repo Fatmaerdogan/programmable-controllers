@@ -1,0 +1,35 @@
+' 0-9 arasý Displayi saydýrma 
+DEFINE LOADER_USED 1 
+ADCON1 = 7
+TrisA = 0 
+TrisB = 0 
+portA = 0
+portB = 0
+
+i var byte 
+k var byte[10]
+
+bekle CON 5          
+                             
+k[0] = %00111111
+k[1] = %00000110
+k[2] = %01011011
+k[3] = %01001111
+k[4] = %01100110
+k[5] = %01101101
+k[6] = %01111101
+k[7] = %00000111
+k[8] = %01111111
+k[9] = %01101111
+
+portA.0 = 1
+
+label:
+   
+    FOR i = 0 To 9
+        portB = k[i]
+        pause 500
+    Next i 
+GOTO label
+
+
