@@ -1,0 +1,63 @@
+'KEYPAD=PHONE
+include "lcdKod.pbp"
+define HSER_RCSTA 90h
+DEFINE HSER_TXSTA 24h
+DEFINE HSER_BAUD 9600    'terminaldeki haberleþme hýzý
+DEFINE HSER_CLROERR 1
+
+TRISE=%000                                       'Aslinda PortE.1 direkt topraga çekilse olurdu ama 
+PortE.1=0                                             ' PortE.1=0 olarak yaptik
+ADCON1=7                                         'porta ve porte yi dijitale ayarla
+
+TrisB = %00000000 
+portB = %00000000
+
+i var byte
+j var byte
+k var byte
+l var byte
+label:
+l=128
+lcdout $fe,1
+for j=0 to 10
+   gosub phone
+   lcdout $fe,l,#i
+   l=l+1
+   gosub yaz
+   pause 500
+next j
+gosub oku
+goto label
+
+yaz:
+     write j,i
+return
+
+oku:
+    for j=0 to 10
+        read j,k
+        hserout [dec k]
+        pause 100
+    next j
+    hserout[13,10]
+return
+phone:
+       trisb = %11111000
+       portb.0=1:portb.1=0:portb.2=0
+       if portb.3=1 then i=1 : return
+       if portb.4=1 then i=4 : return
+       if portb.5=1 then i=7 : return
+    
+     
+       portb.0=0:portb.1=1:portb.2=0
+       if portb.3=1 then i=2 : return
+       if portb.4=1 then i=5 : return
+       if portb.5=1 then i=8 : return
+       if portb.6=1 then i=0 : return
+       
+       portb.0=0:portb.1=0:portb.2=1
+       if portb.3=1 then i=3 : return
+       if portb.4=1 then i=6 : return
+       if portb.5=1 then i=9 : return
+
+goto phone

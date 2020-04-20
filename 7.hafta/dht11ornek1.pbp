@@ -1,0 +1,100 @@
+'DHT11 1. örnek
+DEFINE LCD_DREG PORTD           'LCD data portunun baglandigi pic portu 
+DEFINE LCD_DBIT 0                        '4-bit bus için data bit(0yada4) baslangiç
+DEFINE LCD_RSREG PORTE          'LCD RS in baglandigi pic portu 
+DEFINE LCD_RSBIT 0                      'RS in baglandigi pic portE nin bit numarasi
+DEFINE LCD_EREG PORTE            'LCD E nin baglandigi pic portu 
+DEFINE LCD_EBIT 2                        'LCD E nin baglandigi pic portE nin bit numarasi
+DEFINE LCD_BITS 8                             'PortD nin 8 biti veri transferi için kullanildi
+TRISE=%000                                       'Aslinda PortE.1 direkt topraga çekilse olurdu ama 
+PortE.1=0                                             ' PortE.1=0 olarak yaptik
+ADCON1=7                                         'porta ve porte yi dijitale ayarla
+PAUSE 100
+
+LCDOUT $fe,$40,7,5,7,0,0,0,0
+
+nem var byte
+nemondalik var byte
+sicaklik var byte
+sicaklikondalik var byte
+kontrol var byte
+
+symbol giris=portb.0
+
+i var byte
+
+
+label:
+    TrisB.0=0  'pin çýkýþ olarak tanýmlandý
+    giris=0    'bu iþlem sensörü uyandýrýr
+    pause 18
+    giris=1
+    pauseus 40'mikrosaniye olduðu için
+    TrisB.0=1   'pin giriþ olarak tanýmlandý
+    while giris=0'sensörden 1 gelene kadar
+    wend
+    pauseus 85'sensör 80 ms bekle dedi
+     
+    nem=0   'nem degiskeninin 8 bitine 0 verildi
+        for i=7 to 0 step -1     'msb bitleri önce gelecegi için döngü tersten yazildi.yani sensörden gelen ilk bit msb nem[7] ye yazilacak
+            while giris=0        'transmit basladi.lojik seviye 0 dan çikinca ilk veri lojik1 olacak. 
+            wend                 'sonrasindaki lojik 1'in uzunlugu bize verinin 0 ya da 1 mi olacagini belirliyor. 
+            pauseus 40           'Lojik 1'in uzunlugu 26-28microsn arasindaysa data yi lojik 0 olarak alacagiz.garanti olsun diye 40microsn aldik 
+                                 'lojik 1 in uzunlugu 70microsn ye kadar ise lojik 1 olarak alacagiz
+            if giris=1 then nem.0[i]=1 'burada nem degiskeninin for daki kaçinci biti 1 ise ona 1 verilir. diger bitleri zaten 0 di. sonuçta örnegin nem=%01001110 gibi deger olur.
+            while giris=1        'veriden çikmasini bekler, tekrar 0 olunca for a geri gider.
+            wend
+        next i 
+
+    
+    nemondalik=0
+        for i=7 to 0 step -1     'msb bitleri önce gelecegi için döngü tersten yazildi.yani sensörden gelen ilk bit msb nem[7] ye yazilacak
+            while giris=0        'transmit basladi.lojik seviye 0 dan çikinca ilk veri lojik1 olacak. 
+            wend                 'sonrasindaki lojik 1'in uzunlugu bize verinin 0 ya da 1 mi olacagini belirliyor. 
+            pauseus 40           'Lojik 1'in uzunlugu 26-28microsn arasindaysa data yi lojik 0 olarak alacagiz.garanti olsun diye 40microsn aldik 
+                                 'lojik 1 in uzunlugu 70microsn ye kadar ise lojik 1 olarak alacagiz
+            if giris=1 then nemondalik.0[i]=1 'burada nem ondalýk degiskeninin for daki kaçinci biti 1 ise ona 1 verilir. diger bitleri zaten 0 di. sonuçta örnegin nem=%01001110 gibi deger olur.
+            while giris=1        'veriden çikmasini bekler, tekrar 0 olunca for a geri gider.
+            wend
+        next i
+    
+    sicaklik=0
+        for i=7 to 0 step -1     'msb bitleri önce gelecegi için döngü tersten yazildi.yani sensörden gelen ilk bit msb nem[7] ye yazilacak
+            while giris=0        'transmit basladi.lojik seviye 0 dan çikinca ilk veri lojik1 olacak. 
+            wend                 'sonrasindaki lojik 1'in uzunlugu bize verinin 0 ya da 1 mi olacagini belirliyor. 
+            pauseus 40           'Lojik 1'in uzunlugu 26-28microsn arasindaysa data yi lojik 0 olarak alacagiz.garanti olsun diye 40microsn aldik 
+                                 'lojik 1 in uzunlugu 70microsn ye kadar ise lojik 1 olarak alacagiz
+            if giris=1 then sicaklik.0[i]=1 'burada sýcaklýk degiskeninin for daki kaçinci biti 1 ise ona 1 verilir. diger bitleri zaten 0 di. sonuçta örnegin nem=%01001110 gibi deger olur.
+            while giris=1        'veriden çikmasini bekler, tekrar 0 olunca for a geri gider.
+            wend
+        next i
+    
+    sicaklikondalik=0
+        for i=7 to 0 step -1     'msb bitleri önce gelecegi için döngü tersten yazildi.yani sensörden gelen ilk bit msb nem[7] ye yazilacak
+            while giris=0        'transmit basladi.lojik seviye 0 dan çikinca ilk veri lojik1 olacak. 
+            wend                 'sonrasindaki lojik 1'in uzunlugu bize verinin 0 ya da 1 mi olacagini belirliyor. 
+            pauseus 40           'Lojik 1'in uzunlugu 26-28microsn arasindaysa data yi lojik 0 olarak alacagiz.garanti olsun diye 40microsn aldik 
+                                 'lojik 1 in uzunlugu 70microsn ye kadar ise lojik 1 olarak alacagiz
+            if giris=1 then sicaklikondalik.0[i]=1 'burada sýcaklýk ondalýk degiskeninin for daki kaçinci biti 1 ise ona 1 verilir. diger bitleri zaten 0 di. sonuçta örnegin nem=%01001110 gibi deger olur.
+            while giris=1        'veriden çikmasini bekler, tekrar 0 olunca for a geri gider.
+            wend
+        next i
+    
+    kontrol=0
+        for i=7 to 0 step -1     'msb bitleri önce gelecegi için döngü tersten yazildi.yani sensörden gelen ilk bit msb nem[7] ye yazilacak
+            while giris=0        'transmit basladi.lojik seviye 0 dan çikinca ilk veri lojik1 olacak. 
+            wend                 'sonrasindaki lojik 1'in uzunlugu bize verinin 0 ya da 1 mi olacagini belirliyor. 
+            pauseus 40           'Lojik 1'in uzunlugu 26-28microsn arasindaysa data yi lojik 0 olarak alacagiz.garanti olsun diye 40microsn aldik 
+                                 'lojik 1 in uzunlugu 70microsn ye kadar ise lojik 1 olarak alacagiz
+            if giris=1 then kontrol.0[i]=1 'burada kontrol degiskeninin for daki kaçinci biti 1 ise ona 1 verilir. diger bitleri zaten 0 di. sonuçta örnegin nem=%01001110 gibi deger olur.
+            while giris=1        'veriden çikmasini bekler, tekrar 0 olunca for a geri gider.
+            wend
+        next i
+    
+    LcdOut $fe,1,"nem=",#nem,".",#nemondalik,"%"
+    pause 500
+    lcdout $fe,$C0,"sicaklik=",#sicaklik,".",#sicaklikondalik,0,"C"
+    pause 500
+    lcdout $fe,$94,"kontrol=",#kontrol
+    pause 500
+goto label
