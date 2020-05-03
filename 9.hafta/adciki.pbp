@@ -1,0 +1,32 @@
+'analog digital converter
+DEFINE LCD_DREG PORTD           'LCD data portunun baglandigi pic portu 
+DEFINE LCD_DBIT 0                        '4-bit bus için data bit(0yada4) baslangiç
+DEFINE LCD_RSREG PORTB          'LCD RS in baglandigi pic portu 
+DEFINE LCD_RSBIT 0                      'RS in baglandigi pic portE nin bit numarasi
+DEFINE LCD_EREG PORTB            'LCD E nin baglandigi pic portu 
+DEFINE LCD_EBIT 1                        'LCD E nin baglandigi pic portE nin bit numarasi
+DEFINE LCD_BITS 8                             'PortD nin 8 biti veri transferi için kullanildi
+define ADC_BITS 8
+define ADC_CLOCK 1
+define ADC_SAPMLEUS 50
+TRISA=%000001
+ADCON1=0
+i var byte
+j var word
+k var byte
+m var byte
+
+label:
+ADCIN 0,i
+j=i*10
+j=j*5
+j=j/255
+
+k=j dig 1
+m=j dig 0
+
+lcdout $fe,1,"cevrim:",#i
+lcdout $fe,$C0,"gerilim:",#k,".",#m,"volt"
+ 
+pause 10
+goto label 
