@@ -1,0 +1,51 @@
+define HSER_RCSTA 90h
+DEFINE HSER_TXSTA 24h
+DEFINE HSER_BAUD 9600    'terminaldeki haberleþme hýzý
+DEFINE HSER_CLROERR 1
+SCL var PORTC.3
+SDA var PORTC.4
+i var byte
+j var byte
+k var byte
+a var word
+
+for a=0 to 10
+    i=a*2
+    I2CWRITE SDA,SCL,$A0,a,[i]
+    Hserout ["a1: ",DEC a," i1: ",dec i,13,10]
+    pause 10
+next a
+
+for a=0 to 10
+    i=a*3
+    I2CWRITE SDA,SCL,$A2,a,[i]
+    Hserout ["a2: ",DEC a," i2: ",dec i,13,10]
+    pause 10
+next a
+
+for a=0 to 10
+    i=a*4
+    I2CWRITE SDA,SCL,$A4,a,[i]
+    Hserout ["a3: ",DEC a," i3: ",dec i,13,10]
+    pause 10
+next a
+label:
+
+for a=0 to 10 step 1
+    I2CREAD SDA,SCL,$A1,a,[k]
+    Hserout ["a1: ",DEC a," k1: ",dec k,13,10]
+    pause 10
+next a
+
+for a=0 to 10 step 1
+    I2CREAD SDA,SCL,$A3,a,[k]
+    Hserout ["a2: ",DEC a," k2: ",dec k,13,10]
+    pause 10
+next a
+
+for a=0 to 10 step 1
+    I2CREAD SDA,SCL,$A5,a,[k]
+    Hserout ["a3: ",DEC a," k3: ",dec k,13,10]
+    pause 10
+next a
+end

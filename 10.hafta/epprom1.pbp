@@ -1,0 +1,26 @@
+'11 adresine 0-55 arasý 5'er artan þeklinde yazdýr oku
+define HSER_RCSTA 90h
+DEFINE HSER_TXSTA 24h
+DEFINE HSER_BAUD 9600    'terminaldeki haberleþme hýzý
+DEFINE HSER_CLROERR 1
+SCL var PORTC.3
+SDA var PORTC.4
+i var byte
+j var byte
+k var byte
+a var word
+
+for a=0 to 10
+    i=i+5
+    I2CWRITE SDA,SCL,$A0,a,[i]
+    Hserout ["a: ",DEC a," i: ",dec i,13,10]
+    pause 10
+next a
+
+label:
+for a=0 to 10 step 1
+    I2CREAD SDA,SCL,$A1,a,[k]
+    Hserout ["a: ",DEC a," k: ",dec k,13,10]
+    pause 10
+next a
+end
